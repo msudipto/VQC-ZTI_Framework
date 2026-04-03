@@ -1,0 +1,39 @@
+# Recommended: Python 3.11 or 3.12 (avoid Python 3.13/3.14 for scientific wheels)
+
+# -----------------------------
+# Core scientific stack
+# -----------------------------
+numpy==1.26.4
+scipy==1.11.4
+pandas==2.2.2
+scikit-learn==1.5.1
+matplotlib==3.9.2
+PyYAML==6.0.2
+tqdm==4.66.5
+
+# -----------------------------
+# PyTorch (GPU build via extra index)
+# Keep PyPI as the primary index, and allow PyTorch CUDA wheels as an extra index.
+# -----------------------------
+--index-url https://pypi.org/simple
+--extra-index-url https://download.pytorch.org/whl/cu130
+
+# PyTorch CUDA versions pin
+torch==2.10.0+cu130
+torchvision==0.25.0+cu130
+torchaudio==2.10.0+cu130
+
+# -----------------------------
+# Quantum ML stack (pinned to avoid breaking API changes)
+# -----------------------------
+pennylane==0.39.0
+pennylane-lightning==0.39.0
+
+# PennyLane/autoray compatibility pin
+autoray==0.6.11
+
+# -----------------------------
+# OPTIONAL (Linux/WSL2 only): GPU quantum simulator
+# Not supported on native Windows. Use WSL2 Ubuntu if you want lightning.gpu.
+# -----------------------------
+# pennylane-lightning-gpu==0.39.0

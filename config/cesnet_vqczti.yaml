@@ -1,0 +1,193 @@
+# CESNET-TimeSeries24-CD config for VQC–ZTI experiments
+# Goal: publishable evaluation suite (multi-seed + ablations + group/time splits)
+
+dataset:
+  root_dir: data/raw/cesnet_timeseries24
+
+  # Combine multiple “views” together
+  data_globs:
+    - data/raw/cesnet_timeseries24/ip_addresses_full/agg_10_minutes/**/*.csv
+    - data/raw/cesnet_timeseries24/institutions/agg_10_minutes/*.csv
+    - data/raw/cesnet_timeseries24/institution_subnets/agg_10_minutes/*.csv
+    - data/raw/cesnet_timeseries24/times/times_10_minutes.csv
+
+  # Must match number of globs above (4)
+  max_files_per_glob: [1500, 500, 500, 500]
+
+  # Deterministic file sampling in preprocess
+  random_state: 42
+
+# Feature set (12 dims)
+feature_cols:
+  - n_flows
+  - n_packets
+  - n_bytes
+  - n_dest_asn
+  - n_dest_ports
+  - n_dest_ip
+  - tcp_udp_ratio_packets
+  - tcp_udp_ratio_bytes
+  - dir_ratio_packets
+  - dir_ratio_bytes
+  - avg_duration
+  - avg_ttl
+
+# Used by preprocess to check “missing core fields”
+# (for aggregated datapoints, this should just be your feature columns)
+core_fields:
+  - n_flows
+  - n_packets
+  - n_bytes
+  - n_dest_asn
+  - n_dest_ports
+  - n_dest_ip
+  - tcp_udp_ratio_packets
+  - tcp_udp_ratio_bytes
+  - dir_ratio_packets
+  - dir_ratio_bytes
+  - avg_duration
+  - avg_ttl
+
+labeling:
+  # quantiles on anomaly score -> 3-class pseudo-labels (0/1/2)
+  q_susp: 0.85
+  q_mal: 0.95
+
+# Default split (still used by preprocess to create X_train/X_eval quickly)
+# NOTE: group/time splits will be created by make_splits.py from X_all/y_all/id_time_all/group_key_all
+train_eval_split:
+  eval_size: 0.20
+  random_state: 42
+
+subsample:
+  enabled: true
+  per_class: [1500, 500, 500]
+  total: 4875
+
+train_qnn:
+  # Binary anomaly detection (normal=0 vs anomaly={1,2})
+  task: binary
+
+  # Prefer CUDA for torch (your code safely falls back if not usable)
+  prefer_cuda: true
+
+  # PQC
+  n_layers: 2
+  n_qubits: 12
+
+  # IMPORTANT for hybrid+batched training:
+  # - lightning.* supports "adjoint"
+  # - default.qubit will auto-fallback to "backprop" in qnn_model.py if needed
+  diff_method: adjoint
+
+  # Hybrid QNN
+  use_embedder: true
+  embed_hidden: 64
+  embed_layers: 2
+  angle_scale: 3.14159265
+
+  use_head: true
+  head_hidden: 32
+
+  # Training
+  epochs: 20
+  batch_size: 32
+  eval_batch_size: 32
+  lr: 0.002
+  weight_decay: 0.0001
+  grad_clip_norm: 1.0
+
+  # Default seed (multi-seed suite below will override this)
+  seed: 42
+
+baseline:
+  models: [logreg, rf, extratrees]
+
+  random_state: 42
+  n_jobs: -1
+
+  logreg:
+    C: 1.0
+    max_iter: 4000
+    class_weight: balanced
+
+  rf:
+    n_estimators: 400
+    class_weight: balanced_subsample
+
+  extratrees:
+    n_estimators: 600
+    max_depth: null
+    min_samples_split: 2
+    min_samples_leaf: 1
+    max_features: sqrt
+    class_weight: balanced
+
+# -------------------------------
+# Publishability suite controls
+# -------------------------------
+
+make_splits:
+  # make_splits.py reads these NPZ fields if present:
+  # X_all, y_all, id_time_all, group_key_all
+  npz_path: data/processed/cesnet_vqczti.npz
+  out_dir: data/processed/splits
+  overwrite: true
+
+experiment:
+  enabled: true
+
+  # Multi-seed reporting (mean ± std). 5 seeds is a common minimum for publishable stability.
+  seeds: [42, 43, 44, 45, 46]
+
+  # Run ALL split regimes (this is what “group split + time split” means in practice:
+  # separate evaluation regimes, not one single split doing both).
+  split_modes:
+    - random_stratified
+    - group
+    - time
+
+  # Split parameters
+  eval_size: 0.20
+
+  # For group split: make_splits.py will use group_key_all from NPZ
+  group_split:
+    key_npz: group_key_all
+    max_tries: 200  # retries to get good class balance in eval
+
+  # For time split: make_splits.py will use id_time_all from NPZ
+  time_split:
+    key_npz: id_time_all
+    direction: forward  # train=early times, eval=late times
+    # If the naive threshold produces degenerate eval (e.g., missing class), it will adjust.
+
+  # Ablation suite (each entry is a small override applied on top of train_qnn)
+  # This will let you report: "Hybrid helps", "Head helps", etc.
+  ablations:
+    - name: full_hybrid
+      train_qnn_overrides:
+        use_embedder: true
+        embed_layers: 2
+        embed_hidden: 64
+        use_head: true
+        head_hidden: 32
+
+    - name: no_head
+      train_qnn_overrides:
+        use_head: false
+
+    - name: no_embedder
+      train_qnn_overrides:
+        use_embedder: false
+
+    - name: shallow_embedder
+      train_qnn_overrides:
+        embed_layers: 1
+
+    - name: pqc_only
+      train_qnn_overrides:
+        use_embedder: false
+        use_head: false
+
+  # Where we’ll write aggregated results later (mean/std tables, per-split summaries)
+  out_dir: artifacts/experiments

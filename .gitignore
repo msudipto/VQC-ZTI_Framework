@@ -1,0 +1,120 @@
+# ------------------------------
+# Python
+# ------------------------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.python-version
+
+# ------------------------------
+# Virtual environments
+# ------------------------------
+.venv/
+venv/
+env/
+ENV/
+
+# ------------------------------
+# Packaging / build
+# ------------------------------
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# ------------------------------
+# Testing / coverage
+# ------------------------------
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+
+# ------------------------------
+# Jupyter
+# ------------------------------
+.ipynb_checkpoints/
+
+# ------------------------------
+# Editors / IDE
+# ------------------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ------------------------------
+# OS files
+# ------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ------------------------------
+# Logs / temp
+# ------------------------------
+*.log
+*.tmp
+*.temp
+logs/
+tmp/
+temp/
+
+# ------------------------------
+# Environment / secrets
+# ------------------------------
+.env
+.env.*
+*.pem
+*.key
+*.crt
+*.p12
+secrets/
+credentials/
+
+# ------------------------------
+# Local experiment noise
+# ------------------------------
+.cache/
+.cache/**
+wandb/
+mlruns/
+tensorboard/
+runs/
+
+# ------------------------------
+# Data policy
+# Keep documentation and optional samples tracked,
+# but ignore bulk/raw/generated data by default.
+# ------------------------------
+data/raw/
+data/interim/
+data/processed/
+!data/README.md
+!data/samples/
+!data/samples/**
+
+# ------------------------------
+# Artifact policy
+# Keep only curated/final artifacts in Git.
+# Large final assets should be tracked with Git LFS.
+# ------------------------------
+artifacts/cache/
+artifacts/tmp/
+artifacts/logs/
+artifacts/checkpoints/
+artifacts/runs/
+artifacts/experiments/
+!artifacts/final/
+!artifacts/final/**
+
+# ------------------------------
+# Misc
+# ------------------------------
+*.bak
+*.orig
