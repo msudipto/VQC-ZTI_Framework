@@ -172,6 +172,22 @@ Where applicable, publication assets should be exported in stable formats such a
 
 ---
 
+## Authors and Collaborators  
+
+**Shakil Ahmed, Member, IEEE**  
+Department of Electrical and Computer Engineering, Iowa State University, Ames, Iowa, USA  
+Email: [shakil@iastate.edu](mailto:shakil@iastate.edu)
+
+**Mubassir Sudipto**  
+Department of Electrical and Computer Engineering, Iowa State University, Ames, Iowa, USA  
+Email: [msudipto@iastate.edu](mailto:msudipto@iastate.edu)
+
+**Ashfaq Khokhar, Fellow, IEEE**  
+Department of Electrical and Computer Engineering, Iowa State University, Ames, Iowa, USA  
+Email: [ashfaq@iastate.edu](mailto:ashfaq@iastate.edu)
+
+---
+
 ## Citation  
 
 If you use this repository in academic work, please cite the associated paper and, where appropriate, the software repository itself.
@@ -180,7 +196,7 @@ Example repository citation:
 
 ```bibtex
 @misc{vqc_zti_framework_2026,
-  author       = {Mubassir Sudipto and contributors},
+  author       = {Shakil Ahmed and Mubassir Sudipto and Ashfaq Khokhar},
   title        = {VQC-ZTI Framework: Variational Quantum-Classical Zero-Trust Anomaly Detection and CESNET-Based Security Evaluation},
   year         = {2026},
   howpublished = {\url{https://github.com/<your-username>/VQC-ZTI-Framework}},
@@ -203,6 +219,6 @@ This research repository supports ongoing work in **quantum-enhanced cybersecuri
 
 ---
 
-**Correspondence:** *Mubassir Sudipto*  
-**Email:** [msudipto@iastate.edu](mailto:msudipto@iastate.edu)  
-**Affiliation:** Department of Electrical and Computer Engineering, Iowa State University
+**Correspondence:** *Shakil Ahmed, Member, IEEE; Mubassir Sudipto; and Ashfaq Khokhar, Fellow, IEEE*  
+**Emails:** [shakil@iastate.edu](mailto:shakil@iastate.edu), [msudipto@iastate.edu](mailto:msudipto@iastate.edu), [ashfaq@iastate.edu](mailto:ashfaq@iastate.edu)  
+**Affiliation:** Department of Electrical and Computer Engineering, Iowa State University, Ames, Iowa, USA
