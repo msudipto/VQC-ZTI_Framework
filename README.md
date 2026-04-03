@@ -219,6 +219,6 @@ This research repository supports ongoing work in **quantum-enhanced cybersecuri
 
 ---
 
-**Correspondence:** *Shakil Ahmed, Member, IEEE; Mubassir Sudipto; and Ashfaq Khokhar, Fellow, IEEE*  
+**Correspondence:** *Prof. Shakil Ahmed, Member, IEEE; Mubassir Sudipto; and Prof. Ashfaq Khokhar, Fellow, IEEE*  
 **Emails:** [shakil@iastate.edu](mailto:shakil@iastate.edu), [msudipto@iastate.edu](mailto:msudipto@iastate.edu), [ashfaq@iastate.edu](mailto:ashfaq@iastate.edu)  
 **Affiliation:** Department of Electrical and Computer Engineering, Iowa State University, Ames, Iowa, USA
