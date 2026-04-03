@@ -5,7 +5,7 @@
 
 ## Abstract  
 
-This repository presents the full experimental and implementation workflow for **VQC-ZTI**, a **variational quantum-classical zero-trust framework** for anomaly detection, risk-adaptive access control, and secure next-generation network evaluation.  
+This repository presents the full experimental and implementation workflow for **VQC-ZTI**, a **variational quantum-classical zero-trust framework** for anomaly detection, risk-adaptive access control, and secure evaluation of next-generation quantum tactile internet networks.  
 The framework integrates **hybrid quantum-classical learning**, **zero-trust security logic**, and **CESNET-derived aggregated traffic analysis** to support reproducible experimentation on encrypted-flow anomaly detection, micro-segmentation, and policy-aware risk evaluation.  
 The implementation is designed for research-grade reproducibility and supports preprocessing, model training, evaluation, ablation studies, and artifact generation for manuscript development and experimental verification.
 
