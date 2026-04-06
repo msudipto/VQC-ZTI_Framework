@@ -192,7 +192,7 @@ Email: [ashfaq@iastate.edu](mailto:ashfaq@iastate.edu)
 
 If you use this repository in academic work, please cite the associated paper and, where appropriate, the software repository itself.
 
-Example repository citation:
+Bibtex repository citation:
 
 ```bibtex
 @misc{vqc_zti_framework_2026,
