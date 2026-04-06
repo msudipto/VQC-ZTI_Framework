@@ -1,0 +1,15 @@
+cd "X:\Quantum Research\VQC-ZTI"
+
+py -3.12 -m venv .venv
+.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip setuptools wheel
+
+pip install -r requirements.txt
+
+python -m src.preprocess_cesnet
+python -m src.train_qnn
+python -m src.eval_qnn
+python -m src.baseline_train_eval
+python -m src.plot_results
+
+.\run_pipeline.ps1
