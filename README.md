@@ -116,7 +116,7 @@ This script is intended to coordinate preprocessing, model execution, evaluation
 | Component | Purpose | Research Role |
 |----------|---------|---------------|
 | **Preprocessing Pipeline** | Converts raw telemetry into experiment-ready inputs | Supports consistent and reproducible dataset formation |
-| **Hybrid VQC Model** | Performs anomaly-sensitive quantum-classical learning | Enables evaluation of variational quantum methods for security analytics |
+| **Hybrid QNN Model** | Performs anomaly-sensitive quantum-classical learning | Enables evaluation of variational quantum methods for security analytics |
 | **Zero-Trust Evaluation Logic** | Maps anomaly evidence into policy-aware risk behavior | Supports access-control and micro-segmentation analysis |
 | **Ablation and Artifact Workflow** | Produces structured experiment comparisons and outputs | Facilitates manuscript figures, tables, and reproducible reporting |
 
