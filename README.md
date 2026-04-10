@@ -196,7 +196,7 @@ Bibtex repository citation:
 
 ```bibtex
 @misc{vqc_zti_framework_2026,
-  author       = {Shakil Ahmed and Mubassir Sudipto and Ashfaq Khokhar},
+  author       = {Shakil Ahmed and Mubassir Serneabat Sudipto and Ashfaq Khokhar},
   title        = {VQC-ZTI Framework: Variational Quantum-Classical Zero-Trust Anomaly Detection and CESNET-Based Security Evaluation},
   year         = {2026},
   howpublished = {\url{https://github.com/msudipto/VQC-ZTI_Framework}},
