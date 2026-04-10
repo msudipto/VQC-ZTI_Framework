@@ -178,7 +178,7 @@ Where applicable, publication assets should be exported in stable formats such a
 Department of Electrical and Computer Engineering, Iowa State University, Ames, Iowa, USA  
 Email: [shakil@iastate.edu](mailto:shakil@iastate.edu)
 
-**Mubassir Sudipto**  
+**Mubassir Serneabat Sudipto**  
 Department of Electrical and Computer Engineering, Iowa State University, Ames, Iowa, USA  
 Email: [msudipto@iastate.edu](mailto:msudipto@iastate.edu)
 
