@@ -1,224 +1,579 @@
-# VQC-ZTI Framework  
-**Variational Quantum-Classical Zero-Trust Anomaly Detection and CESNET-Based Security Evaluation**
+---
+license: mit
+library_name: pytorch
+pipeline_tag: tabular-classification
+tags:
+  - pytorch
+  - pennylane
+  - quantum-machine-learning
+  - quantum-neural-network
+  - variational-quantum-classifier
+  - hybrid-quantum-classical
+  - anomaly-detection
+  - network-anomaly-detection
+  - cybersecurity
+  - zero-trust
+  - tactile-internet
+  - network-security
+  - encrypted-traffic
+  - cesnet
+  - arxiv:2608.18572
+---
+
+# VQC-ZTI
+## Variational Quantum Control for Zero Trust Protection of the Tactile Internet
+
+[![arXiv](https://img.shields.io/badge/arXiv-2608.18572-b31b1b.svg)](https://arxiv.org/abs/2608.18572)
+[![Hugging Face Paper](https://img.shields.io/badge/Hugging%20Face-Paper-yellow.svg)](https://huggingface.co/papers/2608.18572)
+[![DOI](https://img.shields.io/badge/DOI-10.48550%2FarXiv.2608.18572-blue.svg)](https://doi.org/10.48550/arXiv.2608.18572)
+[![Conference](https://img.shields.io/badge/IEEE-GLOBECOM%202026-blue.svg)](https://arxiv.org/abs/2608.18572)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+**Paper:** [VQC-ZTI: Variational Quantum Control for Zero Trust Protection of the Tactile Internet](https://arxiv.org/abs/2608.18572)  
+**Hugging Face Paper:** [huggingface.co/papers/2608.18572](https://huggingface.co/papers/2608.18572)  
+**Code:** [github.com/msudipto/VQC-ZTI_Framework](https://github.com/msudipto/VQC-ZTI_Framework)  
+**DOI:** [10.48550/arXiv.2608.18572](https://doi.org/10.48550/arXiv.2608.18572)  
+**Venue:** Accepted at **IEEE Global Communications Conference (GLOBECOM 2026)**  
+**Primary arXiv Category:** Cryptography and Security (`cs.CR`)  
+**Cross-lists:** Machine Learning (`cs.LG`), Networking and Internet Architecture (`cs.NI`)
 
 ---
 
-## Abstract  
+## Model Description
 
-This repository presents the full experimental and implementation workflow for **VQC-ZTI**, a **variational quantum-classical zero-trust framework** for anomaly detection, risk-adaptive access control, and secure evaluation of next-generation quantum tactile internet networks.  
-The framework integrates **hybrid quantum-classical learning**, **zero-trust security logic**, and **CESNET-derived aggregated traffic analysis** to support reproducible experimentation on encrypted-flow anomaly detection, micro-segmentation, and policy-aware risk evaluation.  
-The implementation is designed for research-grade reproducibility and supports preprocessing, model training, evaluation, ablation studies, and artifact generation for manuscript development and experimental verification.
+**VQC-ZTI** is a hybrid quantum-classical anomaly-evidence model developed for a split-plane zero-trust architecture targeting Tactile Internet services.
+
+The framework separates:
+
+1. **Off-path evidence generation**, where encrypted-flow telemetry is processed by a hybrid Variational Quantum Classifier / Quantum Neural Network; and
+2. **On-path deterministic enforcement**, where Policy Enforcement Points (PEPs) apply cached grant, restrict, step-up, or deny actions.
+
+The design prevents probabilistic VQC inference from being placed directly in the latency-critical Tactile Internet control path.
+
+The released implementation uses **PyTorch** and **PennyLane** and evaluates the hybrid model on **CESNET-derived aggregated encrypted-flow traffic records**.
+
+### Model Sources
+
+- **Paper:** https://arxiv.org/abs/2608.18572
+- **Hugging Face Paper Page:** https://huggingface.co/papers/2608.18572
+- **Source Code:** https://github.com/msudipto/VQC-ZTI_Framework
+- **DOI:** https://doi.org/10.48550/arXiv.2608.18572
 
 ---
 
-## Repository Structure  
+## Authors
+
+### Mubassir Serneabat Sudipto
+Electrical and Computer Engineering  
+Iowa State University  
+Ames, Iowa, USA  
+Email: [msudipto@iastate.edu](mailto:msudipto@iastate.edu)
+
+### Shakil Ahmed
+Computer Science, College of Computing  
+Grand Valley State University  
+Allendale, Michigan, USA  
+Email: [ahmeshak@gvsu.edu](mailto:ahmeshak@gvsu.edu)
+
+### Ashfaq Khokhar
+Carl R. Ice College of Engineering  
+Kansas State University  
+Manhattan, Kansas, USA  
+Email: [akhokhar@k-state.edu](mailto:akhokhar@k-state.edu)
+
+---
+
+## Model Architecture
+
+The full-hybrid VQC-ZTI anomaly model contains the following stages:
+
+1. **Feature preprocessing**
+   - Payload-independent encrypted-flow statistics
+   - Robust feature preparation
+   - 12 input features
+
+2. **Classical embedding**
+   - A trainable classical embedder maps the processed feature vector into a 12-dimensional representation.
+
+3. **Quantum feature encoding**
+   - Number of qubits: **12**
+   - Initial state: all-zero state
+   - Feature encoding: single-qubit Pauli-Y rotations (`RY`)
+
+4. **Variational Quantum Circuit**
+   - Number of variational layers: **2**
+   - Trainable single-qubit rotations
+   - Nearest-neighbor CNOT entanglement
+
+5. **Quantum measurement**
+   - Pauli-Z expectation values are measured from two output qubits.
+
+6. **Classical classification head**
+   - Quantum measurements are mapped into two class logits.
+   - The class-1 probability is used as the continuous anomaly score.
+
+The complete architecture is trained end-to-end through the PyTorch-PennyLane computational graph.
+
+---
+
+## Input
+
+The model operates on structured, payload-independent network-traffic features derived from CESNET aggregated traffic.
+
+The evaluated implementation uses:
+
+- **12 numerical features**
+- packet and byte statistics
+- destination diversity
+- traffic ratios
+- average flow duration
+- average time-to-live
+- related aggregated flow characteristics
+
+The model is therefore a **tabular binary-classification model**, not a natural-language, image, or generative model.
+
+---
+
+## Output
+
+The model produces a continuous anomaly score:
 
 ```text
-VQC-ZTI-Framework/
-├── artifacts/                          # Curated experiment outputs, figures, checkpoints, and final results
-├── config/                             # Configuration files for preprocessing, training, evaluation, and experiments
-├── data/                               # Dataset placement instructions, local raw/processed data layout, and documentation
-├── src/                                # Core source code for preprocessing, training, evaluation, and utilities
-│
-├── README.md                           # Repository overview and reproducibility guide
-├── requirements.txt                    # Python dependency specification
-└── run_pipeline.ps1                    # End-to-end Windows PowerShell execution pipeline
+0 <= anomaly_score <= 1
 ```
+
+The binary experimental classes are:
+
+```text
+0 = normative record
+1 = suspicious or high-anomaly record
+```
+
+The score represents evidence with respect to the statistical anomaly-labeling procedure used in the study.
+
+**It must not be interpreted as a calibrated probability that a network flow is malicious.**
 
 ---
 
-## Environment Configuration  
+## Dataset and Experimental Data
 
-### Requirements  
-- Python ≥ 3.10  
-- PyTorch  
-- PennyLane  
-- NumPy  
-- Pandas  
-- Scikit-learn  
-- Matplotlib  
-- Windows PowerShell for the provided pipeline script  
-- Git LFS for selected large research assets
+The evaluation reported in the associated paper uses **4,875 CESNET-derived aggregated traffic records** with **12 payload-independent features**.
 
-### Installation  
+Experimental labels are generated through a controlled statistical-anomaly procedure based on robust-scaled feature norms and empirical quantiles.
+
+The labeling scheme separates:
+
+- normative records,
+- suspicious records, and
+- high-anomaly records.
+
+For binary evaluation, suspicious and high-anomaly records are combined into the anomaly class.
+
+### Important Data Qualification
+
+These labels are **statistical pseudo-labels**, not verified attack annotations.
+
+Consequently:
+
+- reported anomaly-detection performance measures agreement with the constructed statistical benchmark;
+- false-positive rate is measured relative to the quantile-derived normative class; and
+- the reported results must not be interpreted as verified intrusion-detection performance against confirmed cyberattacks.
+
+The full data preparation and reproducibility workflow is documented in the GitHub repository:
+
+https://github.com/msudipto/VQC-ZTI_Framework
+
+---
+
+## Evaluation Protocols
+
+Three evaluation protocols are used.
+
+### Random Stratified Holdout
+
+- Training records: **3,900**
+- Evaluation records: **975**
+- Binary-label distribution preserved
+
+### Entity-Group Holdout
+
+- Training records: approximately **3,751-3,971**
+- Evaluation records: approximately **904-1,124**
+- Training and evaluation entity groups are disjoint
+
+### Temporal Holdout
+
+- Training records: **3,887 earlier records**
+- Evaluation records: **988 later records**
+
+These protocols test performance under conventional random splitting as well as entity and chronological distribution shifts.
+
+---
+
+## Training Procedure
+
+The reported full-hybrid QNN configuration uses:
+
+| Parameter | Value |
+|---|---:|
+| Input features | 12 |
+| Qubits | 12 |
+| Variational layers | 2 |
+| Epochs | 20 |
+| Batch size | 32 |
+| Learning rate | 2 x 10^-3 |
+| Random seeds | 42-46 |
+| Training runs | 5 |
+| Quantum execution | Analytic expectation values |
+| Quantum framework | PennyLane |
+| ML framework | PyTorch |
+
+Training uses a **class-weighted negative log-likelihood objective**.
+
+Class weights are determined from the training partition and normalized to unit mean. The classical embedder, variational quantum circuit, and classical classification head are jointly optimized.
+
+### Quantum Execution Setting
+
+The reported experiments use **noiseless analytic expectation values**.
+
+The reported results therefore do not include:
+
+- finite-shot uncertainty,
+- quantum-hardware noise,
+- physical-device connectivity constraints,
+- transpilation overhead,
+- hardware queueing delay, or
+- other physical quantum-computing effects.
+
+---
+
+## Evaluation Results
+
+The full-hybrid QNN is compared against:
+
+- ExtraTrees
+- Random Forest
+- Logistic Regression
+- hybrid-model ablations
+
+### Full-Hybrid QNN Results
+
+| Evaluation Split | ROC-AUC | Accuracy | FPR |
+|---|---:|---:|---:|
+| Entity-Group | **0.9974 +/- 0.0009** | **0.9762 +/- 0.0028** | **0.0241 +/- 0.0042** |
+| Random | **0.9981 +/- 0.0004** | **0.9756 +/- 0.0042** | **0.0270 +/- 0.0050** |
+| Temporal | **0.9941 +/- 0.0018** | **0.9747 +/- 0.0044** | **0.0248 +/- 0.0052** |
+
+Across the three protocols, the full-hybrid QNN achieves the highest reported mean AUC and accuracy and the lowest mean FPR among the evaluated models.
+
+### Comparison with ExtraTrees
+
+Relative to ExtraTrees, mean FPR is reduced by:
+
+| Evaluation Split | FPR Reduction |
+|---|---:|
+| Random | **44.6%** |
+| Entity-Group | **49.6%** |
+| Temporal | **67.9%** |
+
+These comparisons do **not** demonstrate quantum computational advantage because the classical baselines are not parameter- or compute-matched to the complete hybrid neural architecture.
+
+---
+
+## Ablation Study
+
+The associated study evaluates five model configurations:
+
+| Variant | Description |
+|---|---|
+| **Full Hybrid (FH)** | Complete classical embedder + VQC + classification head |
+| **No Head (NH)** | Classification head removed |
+| **Shallow Embedder (SE)** | Reduced classical embedding architecture |
+| **No Embedder (NE)** | Processed features encoded directly |
+| **PQC-only (PQC)** | Restricted parameterized quantum circuit without the complete hybrid structure |
+
+The full-hybrid configuration performs best across all reported evaluation protocols.
+
+The ablation results indicate that the reported performance depends on the **complete hybrid quantum-classical pipeline**, rather than on the parameterized quantum circuit alone.
+
+---
+
+## Zero-Trust Integration
+
+The anomaly model is designed as an **evidence source**, not as a direct access-control mechanism.
+
+VQC-ZTI separates two operational planes:
+
+### Evidence Plane
+
+The asynchronous evidence plane performs:
+
+```text
+Encrypted-Flow Telemetry
+        |
+Feature Preparation
+        |
+Classical Embedding
+        |
+Quantum Encoding
+        |
+VQC / QNN Inference
+        |
+Classical Post-Processing
+        |
+Risk Fusion
+        |
+Policy Computation
+```
+
+### Enforcement Plane
+
+The latency-critical enforcement plane uses:
+
+```text
+Request
+   |
+Policy Enforcement Point (PEP)
+   |
+Cached Deterministic Policy
+   |
+Grant / Restrict / Step-Up / Deny
+   |
+Protected Tactile Internet Service
+```
+
+VQC execution is therefore **not an intermediate processing hop for the current Tactile Internet transaction**.
+
+Delayed anomaly scoring can postpone a future policy update, but does not directly add quantum-processing delay to the current enforcement decision.
+
+---
+
+## Intended Uses
+
+VQC-ZTI is intended for:
+
+- research on hybrid quantum-classical machine learning;
+- network anomaly-detection experimentation;
+- zero-trust architecture research;
+- Tactile Internet security research;
+- quantum-enhanced cybersecurity experimentation;
+- comparative classical/quantum model evaluation;
+- reproducibility studies;
+- controlled anomaly-scoring experiments;
+- hybrid-model ablation studies; and
+- research on off-path security-evidence generation.
+
+---
+
+## Out-of-Scope Uses
+
+The model should **not** currently be treated as:
+
+- a production intrusion-detection system;
+- a verified malware or attack detector;
+- a calibrated probability-of-compromise estimator;
+- an autonomous access-control authority;
+- proof of quantum advantage;
+- evidence of performance on physical quantum hardware;
+- evidence of end-to-end Tactile Internet latency compliance; or
+- a replacement for deployment-grade network-security validation.
+
+Security-critical decisions should not be based solely on this experimental model.
+
+---
+
+## Limitations
+
+The evaluation has several important validity boundaries.
+
+1. **Statistical labels**
+   - Labels are quantile-derived statistical anomalies rather than verified attack annotations.
+
+2. **Dataset scope**
+   - CESNET aggregated traffic does not represent a hardware-in-the-loop Tactile Internet deployment.
+
+3. **Quantum simulation**
+   - Experiments use noiseless analytic quantum simulation.
+
+4. **No finite-shot evaluation**
+   - Shot noise and sampling uncertainty are excluded.
+
+5. **No physical quantum hardware**
+   - Hardware noise, topology, transpilation, execution latency, and queueing are not evaluated.
+
+6. **No demonstrated quantum advantage**
+   - Classical baselines are not parameter- or compute-matched to the complete hybrid architecture.
+
+7. **Zero-trust policy validation**
+   - Risk-fusion functions and policy thresholds have not yet been calibrated against operational access-control outcomes.
+
+8. **Latency validation**
+   - Prototype component measurements do not establish end-to-end Tactile Internet latency compliance.
+
+Future work includes verified attack labels, capacity-matched neural baselines, finite-shot and noisy quantum execution, physical quantum devices, controlled attack experiments, and hardware-in-the-loop PDP/PEP evaluation.
+
+---
+
+## Reproducibility
+
+The complete experimental framework is available at:
+
+**GitHub:**  
+https://github.com/msudipto/VQC-ZTI_Framework
+
+The repository provides:
+
+- preprocessing code;
+- experiment configuration;
+- PyTorch-PennyLane training workflow;
+- classical baselines;
+- hybrid-model ablations;
+- evaluation scripts;
+- result generation;
+- manuscript figures;
+- experiment artifacts; and
+- reproducibility documentation.
+
+### Repository Installation
+
 ```bash
+git clone https://github.com/msudipto/VQC-ZTI_Framework.git
+cd VQC-ZTI_Framework
+
 python -m venv .venv
-source .venv/bin/activate       # (Windows) .venv\Scripts\activate
-pip install -r requirements.txt
-git lfs install
 ```
 
-### Repository Setup  
-Clone the repository and initialize the local environment:
-
-```bash
-git clone https://github.com/<your-username>/VQC-ZTI-Framework.git
-cd VQC-ZTI-Framework
-```
-
-If the repository contains LFS-tracked files, retrieve them using:
-
-```bash
-git lfs pull
-```
-
----
-
-## Experimental Methodology  
-
-### Data Preparation  
-The framework is designed to operate on **CESNET-derived aggregated network traffic data** or compatible structured telemetry.  
-Raw traffic records are placed locally under the `data/` directory, after which the preprocessing pipeline performs cleaning, feature conversion, normalization, filtering, and experiment-ready dataset construction.
-
-### Preprocessing Workflow  
-The preprocessing stage typically performs:
-
-- ingestion of raw CESNET-style aggregated records
-- missing-value handling and numeric feature conversion
-- optional outlier filtering and feature cleaning
-- train/evaluation split construction
-- export of processed modeling-ready datasets
-
-All data placement conventions and reproducibility notes are documented in `data/README.md`.
-
-### Training Workflow  
-The training pipeline supports **variational quantum-classical anomaly detection** under a zero-trust evaluation setting.  
-Depending on configuration, the model pipeline may include:
-
-- classical feature preprocessing
-- quantum feature encoding
-- variational quantum circuit training
-- hybrid optimization over train/eval splits
-- metric logging for anomaly detection and classification behavior
-
-### Evaluation and Analysis  
-The evaluation workflow is intended to support paper-grade analysis, including:
-
-- model performance measurement across controlled splits
-- anomaly detection metrics
-- zero-trust risk evaluation behavior
-- comparative baselines and ablation studies
-- generation of publication-ready outputs and experiment artifacts
-
-### Execution  
-For the default Windows workflow, run:
+On Windows:
 
 ```powershell
+.venv\Scripts\activate
+pip install -r requirements.txt
 .\run_pipeline.ps1
 ```
 
-This script is intended to coordinate preprocessing, model execution, evaluation, and export of reproducible outputs according to the active repository configuration.
+On compatible Unix-like environments, activate the environment with:
+
+```bash
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+See the GitHub repository for the current execution and data-placement instructions.
 
 ---
 
-## Result Summary  
+## Downloading from Hugging Face
 
-| Component | Purpose | Research Role |
-|----------|---------|---------------|
-| **Preprocessing Pipeline** | Converts raw telemetry into experiment-ready inputs | Supports consistent and reproducible dataset formation |
-| **Hybrid QNN Model** | Performs anomaly-sensitive quantum-classical learning | Enables evaluation of variational quantum methods for security analytics |
-| **Zero-Trust Evaluation Logic** | Maps anomaly evidence into policy-aware risk behavior | Supports access-control and micro-segmentation analysis |
-| **Ablation and Artifact Workflow** | Produces structured experiment comparisons and outputs | Facilitates manuscript figures, tables, and reproducible reporting |
+After replacing `YOUR_HF_USERNAME` with the owner of this model repository, the model repository can be cloned using:
 
----
+```bash
+git clone https://huggingface.co/YOUR_HF_USERNAME/VQC-ZTI
+```
 
-## Reproducibility Notes  
+or downloaded with the Hugging Face CLI:
 
-- All experiment behavior should be governed through version-controlled configuration files under `config/`.
-- Random seeds should be fixed where supported to improve repeatability across runs.
-- Large curated research assets should be tracked with **Git LFS** when intentionally versioned.
-- Temporary caches, bulk intermediate files, logs, and regenerable outputs should remain untracked.
-- Dataset version, preprocessing assumptions, split logic, and evaluation settings should be documented for every manuscript-facing experiment.
-- Public redistribution of third-party or derived data should only be performed when permitted by the original data source and license terms.
+```bash
+hf download YOUR_HF_USERNAME/VQC-ZTI
+```
+
+Model loading depends on the checkpoint format included with the release. Refer to the accompanying repository files and the official VQC-ZTI GitHub implementation for the exact reconstruction and inference procedure.
 
 ---
 
-## Data Notes  
+## Paper
 
-The repository does **not** assume unrestricted redistribution of external datasets.  
-Please refer to [`data/README.md`](data/README.md) for:
+The model and experimental framework are described in:
 
-- expected local directory structure
-- raw vs processed data organization
-- CESNET-oriented placement guidance
-- data-sharing restrictions
-- reproducibility recommendations for paper submission
+**Mubassir Serneabat Sudipto, Shakil Ahmed, and Ashfaq Khokhar.**  
+**“VQC-ZTI: Variational Quantum Control for Zero Trust Protection of the Tactile Internet.”**  
+Accepted at **IEEE Global Communications Conference (GLOBECOM 2026)**.  
+arXiv:2608.18572, 2026.
 
----
-
-## Artifact Policy  
-
-The `artifacts/` directory is intended for curated research outputs such as:
-
-- final plots used in manuscripts
-- selected experiment summaries
-- reproducible result bundles
-- intentionally shared checkpoints or evaluation outputs
-
-Large temporary runs, logs, caches, and repeated intermediate outputs should not be committed unless explicitly required for archival reproducibility.
+- **arXiv:** https://arxiv.org/abs/2608.18572
+- **Hugging Face Papers:** https://huggingface.co/papers/2608.18572
+- **DOI:** https://doi.org/10.48550/arXiv.2608.18572
+- **Code:** https://github.com/msudipto/VQC-ZTI_Framework
 
 ---
 
-## Figures and Publication Assets  
+## Citation
 
-This repository is structured to support publication-oriented asset generation, including:
+If you use VQC-ZTI, its implementation, experimental methodology, model checkpoints, or reported results in academic work, please cite the associated paper.
 
-- final experimental plots
-- benchmark summary tables
-- ablation outputs
-- reproducibility-ready result bundles
+### Paper Citation
 
-Where applicable, publication assets should be exported in stable formats such as `.png`, `.pdf`, or `.svg` and stored under curated artifact directories.
+```bibtex
+@misc{sudipto2026vqczti,
+  title         = {{VQC-ZTI}: Variational Quantum Control for Zero Trust Protection of the Tactile Internet},
+  author        = {Sudipto, Mubassir Serneabat and Ahmed, Shakil and Khokhar, Ashfaq},
+  year          = {2026},
+  eprint        = {2608.18572},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CR},
+  doi           = {10.48550/arXiv.2608.18572},
+  url           = {https://arxiv.org/abs/2608.18572},
+  note          = {Accepted at IEEE Global Communications Conference (GLOBECOM 2026)}
+}
+```
 
----
+### Software Repository Citation
 
-## Authors and Collaborators  
-
-**Shakil Ahmed, Member, IEEE**  
-Department of Electrical and Computer Engineering, Iowa State University, Ames, Iowa, USA  
-Email: [shakil@iastate.edu](mailto:shakil@iastate.edu)
-
-**Mubassir Serneabat Sudipto**  
-Department of Electrical and Computer Engineering, Iowa State University, Ames, Iowa, USA  
-Email: [msudipto@iastate.edu](mailto:msudipto@iastate.edu)
-
-**Ashfaq Khokhar, Fellow, IEEE**  
-Department of Electrical and Computer Engineering, Iowa State University, Ames, Iowa, USA  
-Email: [ashfaq@iastate.edu](mailto:ashfaq@iastate.edu)
-
----
-
-## Citation  
-
-If you use this repository in academic work, please cite the associated paper and, where appropriate, the software repository itself.
-
-Bibtex repository citation:
+If you specifically use or extend the accompanying software implementation, you may additionally cite:
 
 ```bibtex
 @misc{vqc_zti_framework_2026,
-  author       = {Shakil Ahmed and Mubassir Serneabat Sudipto and Ashfaq Khokhar},
-  title        = {VQC-ZTI Framework: Variational Quantum-Classical Zero-Trust Anomaly Detection and CESNET-Based Security Evaluation},
+  author       = {Sudipto, Mubassir Serneabat and Ahmed, Shakil and Khokhar, Ashfaq},
+  title        = {{VQC-ZTI Framework}: Variational Quantum-Classical Zero-Trust Anomaly Detection and CESNET-Based Security Evaluation},
   year         = {2026},
   howpublished = {\url{https://github.com/msudipto/VQC-ZTI_Framework}},
-  note         = {Code repository}
+  note         = {Code repository},
+  url          = {https://github.com/msudipto/VQC-ZTI_Framework}
 }
 ```
 
 ---
 
-## License  
+## License
 
-This repository is released under the **MIT License**.  
-See the [`LICENSE`](LICENSE) file for complete terms.
+The VQC-ZTI software implementation is released under the **MIT License**.
 
----
+See the accompanying `LICENSE` file and the official GitHub repository for complete terms:
 
-## Acknowledgment  
-
-This research repository supports ongoing work in **quantum-enhanced cybersecurity**, **zero-trust system design**, and **secure next-generation network evaluation**, with an emphasis on reproducible experimental methodology and publication-oriented artifact generation.
+https://github.com/msudipto/VQC-ZTI_Framework
 
 ---
 
-**Correspondence:** *Prof. Shakil Ahmed, Member, IEEE; Mr. Mubassir Serneabat Sudipto; and Prof. Ashfaq Khokhar, Fellow, IEEE*  
-**Emails:** [shakil@iastate.edu](mailto:shakil@iastate.edu), [msudipto@iastate.edu](mailto:msudipto@iastate.edu), [ashfaq@iastate.edu](mailto:ashfaq@iastate.edu)  
-**Affiliation:** Department of Electrical and Computer Engineering, Iowa State University, Ames, Iowa, USA
+## Acknowledgment
+
+This research supports ongoing work in:
+
+- quantum-enhanced cybersecurity;
+- hybrid quantum-classical machine learning;
+- zero-trust system design;
+- network anomaly detection;
+- Tactile Internet security; and
+- secure next-generation network evaluation.
+
+The project emphasizes reproducible experimental methodology and careful separation between simulated anomaly-evidence performance and claims of operational security effectiveness or quantum advantage.
+
+---
+
+## Contact
+
+**Mubassir Serneabat Sudipto**  
+Iowa State University  
+[msudipto@iastate.edu](mailto:msudipto@iastate.edu)
+
+**Shakil Ahmed**  
+Grand Valley State University  
+[ahmeshak@gvsu.edu](mailto:ahmeshak@gvsu.edu)
+
+**Ashfaq Khokhar**  
+Kansas State University  
+[akhokhar@k-state.edu](mailto:akhokhar@k-state.edu)
+
+---
+
+**Paper:** https://arxiv.org/abs/2608.18572  
+**Hugging Face Paper:** https://huggingface.co/papers/2608.18572  
+**GitHub:** https://github.com/msudipto/VQC-ZTI_Framework
