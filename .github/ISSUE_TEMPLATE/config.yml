@@ -1,0 +1,12 @@
+# Disable blank issues for general contributors to maintain structured bug/feature reporting
+blank_issues_enabled: false
+
+# Direct contributors to academic and reference links outside of tracking issues
+contact_links:
+  - name: arXiv Research Preprint
+    url: https://arxiv.org
+    about: Read the official publication manuscript, methodology overview, and theoretical foundations.
+    
+  - name: Hugging Face Paper Page
+    url: https://huggingface.co
+    about: Join community discussions around the paper, find cross-references, or link model checkpoints.
