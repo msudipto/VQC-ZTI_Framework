@@ -307,7 +307,7 @@ def _bootstrap_ci(
         try:
             auc_b = roc_auc_score(yb, sb)
             ap_b = average_precision_score(yb, sb)
-        except Exception:
+        except ValueError:
             continue
 
         yhat = (sb >= threshold).astype(int)

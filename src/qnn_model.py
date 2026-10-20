@@ -28,6 +28,10 @@ import torch
 from torch import nn
 import torch.nn.functional as F
 
+_QML_DEVICE_FALLBACK_EXCEPTIONS = (ImportError, RuntimeError, TypeError, ValueError)
+if hasattr(qml, "DeviceError"):
+    _QML_DEVICE_FALLBACK_EXCEPTIONS = (qml.DeviceError,) + _QML_DEVICE_FALLBACK_EXCEPTIONS
+
 
 @dataclass
 class QNNResourceInfo:
@@ -112,7 +116,7 @@ class VQCClassifier(nn.Module):
                 dev = qml.device(dev_name, wires=self.n_qubits)
                 self.pl_device_name = dev_name
                 break
-            except Exception:
+            except _QML_DEVICE_FALLBACK_EXCEPTIONS:
                 continue
         if dev is None:
             dev = qml.device("default.qubit", wires=self.n_qubits)
