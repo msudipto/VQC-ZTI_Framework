@@ -26,7 +26,7 @@ torchaudio==2.10.0+cu130
 # -----------------------------
 # Quantum ML stack (pinned to avoid breaking API changes)
 # -----------------------------
-pennylane==0.39.0
+pennylane==0.45.1
 pennylane-lightning==0.39.0
 
 # PennyLane/autoray compatibility pin
