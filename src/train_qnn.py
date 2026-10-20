@@ -62,10 +62,8 @@ def set_seed(seed: int) -> None:
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
-    try:
+    if torch.cuda.is_available():
         torch.cuda.manual_seed_all(seed)
-    except Exception:
-        pass
 
 
 def pick_device(prefer_cuda: bool) -> torch.device:
@@ -398,11 +396,13 @@ def train_one_run(
         ev_auc = float("nan")
         ev_ap = float("nan")
         if n_classes == 2:
-            try:
+            if np.unique(all_y).size == 2:
                 ev_auc = float(roc_auc_score(all_y, all_scores))
                 ev_ap = float(average_precision_score(all_y, all_scores))
-            except Exception:
-                pass
+            else:
+                print(
+                    "[train_qnn] Skipping AUC/AP: evaluation data contains only one class."
+                )
 
         dt = time.perf_counter() - t0
         print(

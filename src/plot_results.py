@@ -286,17 +286,12 @@ def _clear_all_titles(fig) -> None:
     - subplot titles set with ax.set_title(...)
     - figure-level titles set with fig.suptitle(...)
     """
-    try:
-        if getattr(fig, "_suptitle", None) is not None:
-            fig._suptitle.set_text("")
-    except Exception:
-        pass
+    suptitle = getattr(fig, "_suptitle", None)
+    if suptitle is not None:
+        suptitle.set_text("")
 
     for ax in getattr(fig, "axes", []):
-        try:
-            ax.set_title("")
-        except Exception:
-            pass
+        ax.set_title("")
 
 
 def _savefig_clean(fig, out_path: str, dpi: int = 300) -> None:
@@ -356,7 +351,7 @@ def _discover_qnn_runs(run_root: str) -> List[QNNRun]:
                     continue
                 try:
                     seed = int(seed_folder.split("_", 1)[1])
-                except Exception:
+                except ValueError:
                     continue
 
                 run_dir = os.path.join(ab_dir, seed_folder)
@@ -401,7 +396,7 @@ def _discover_baseline_runs(run_root: str) -> List[BaselineRun]:
                     continue
                 try:
                     seed = int(seed_folder.split("_", 1)[1])
-                except Exception:
+                except ValueError:
                     continue
 
                 run_dir = os.path.join(model_dir, seed_folder)

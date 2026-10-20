@@ -434,13 +434,11 @@ def main(config_path: str = "config/cesnet_vqczti.yaml") -> None:
         print(f"[preprocess] Stratified subsample to total={total}: X_all={X_all.shape}")
 
     # Quick sanity: time stats
-    try:
+    if len(id_time_all) > 0:
         print(
             f"[preprocess] id_time stats: min={int(id_time_all.min())}, max={int(id_time_all.max())}, "
             f"unique={len(set(id_time_all.tolist()))}"
         )
-    except Exception:
-        pass
 
     # 7) Random stratified train/eval split (baseline reference split)
     split_cfg = cfg["train_eval_split"]
