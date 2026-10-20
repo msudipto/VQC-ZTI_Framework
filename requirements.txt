@@ -30,7 +30,7 @@ pennylane==0.45.1
 pennylane-lightning==0.39.0
 
 # PennyLane/autoray compatibility pin
-autoray==0.6.11
+autoray==0.11.0
 
 # -----------------------------
 # OPTIONAL (Linux/WSL2 only): GPU quantum simulator
