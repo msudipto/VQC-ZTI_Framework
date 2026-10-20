@@ -1,38 +1,31 @@
 ---
 name: Bug report
-about: Create a report to help us improve
-title: ''
-labels: ''
+about: Report execution crashes, preprocessing failures, or graph execution discrepancies in VQC-ZTI
+title: '[BUG] '
+labels: 'bug'
 assignees: ''
 
 ---
 
 **Describe the bug**
-A clear and concise description of what the bug is.
+A clear and concise description of the training crash, script failure, or artifact generation issue.
 
 **To Reproduce**
 Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+1. Run pipeline command `.\run_pipeline.ps1` or explicit python command: `python -m src...`
+2. Configuration profiles used in `config/`
+3. Error outcome or mismatch observed
 
 **Expected behavior**
-A clear and concise description of what you expected to happen.
+A clear description of what should happen (e.g., successful epoch completion, balanced class distribution, artifact generation).
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
-
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
-
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
+**Pipeline Context & Error Logs (please complete if applicable):**
+ - Python Script / Entry Point: [e.g., training loop, ablation script, baseline evaluator]
+ - Holdout Protocol Used: [e.g., Random Stratified, Entity-Group, Temporal]
+ - PyTorch / PennyLane console trackback errors:
+   ```text
+   Paste tracebacks or console logs here
+   ```
 
 **Additional context**
-Add any other context about the problem here.
+Add any other details about memory allocation limits, missing raw dataset tensors, or script anomalies.
