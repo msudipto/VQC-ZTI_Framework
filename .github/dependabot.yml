@@ -5,7 +5,14 @@
 
 version: 2
 updates:
-  - package-ecosystem: "pip" # Tracks your requirements.txt file
-    directory: "/" # Location of package manifests
+  # 1. Track Python dependencies in requirements.txt
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
+  # 2. Track GitHub Actions workflows (optional but recommended)
+  - package-ecosystem: "github-actions"
+    directory: "/"
     schedule:
       interval: "weekly"
