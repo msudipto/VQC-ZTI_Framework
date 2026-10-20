@@ -6,7 +6,7 @@
 numpy==1.26.4
 scipy==1.18.1
 pandas==3.0.6
-scikit-learn==1.5.1
+scikit-learn==1.9.1
 matplotlib==3.11.2
 PyYAML==6.0.3
 tqdm==4.66.5
