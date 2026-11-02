@@ -21,7 +21,7 @@ tqdm==4.70.1
 # PyTorch CUDA versions pin
 torch==2.15.0
 torchvision==0.29.2
-torchaudio==2.11.0+cu130
+torchaudio==2.11.1
 
 # -----------------------------
 # Quantum ML stack (pinned to avoid breaking API changes)
