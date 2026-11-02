@@ -19,7 +19,7 @@ tqdm==4.70.1
 --extra-index-url https://download.pytorch.org/whl/cu130
 
 # PyTorch CUDA versions pin
-torch==2.14.1+cu130
+torch==2.15.0
 torchvision==0.29.2
 torchaudio==2.11.0+cu130
 
